@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { AuthService } from "../../services/auth.service";
 import { HotToastService } from "@ngneat/hot-toast";
 import { Router } from "@angular/router";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 
 export function passwordMatchValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -35,7 +36,8 @@ export class SignUpComponent implements OnInit {
 
   constructor(private auth: AuthService,
               private toast: HotToastService,
-              private router: Router ) { }
+              private router: Router,
+              private firestore: AngularFirestore ) { }
 
   ngOnInit(): void {
   }
@@ -77,6 +79,16 @@ export class SignUpComponent implements OnInit {
   onSubmit() {
     if(this.signUpForm.valid) {
       const { username, email, password } = this.signUpForm.value;
+
+      this.firestore.doc('/users/' + email)
+        .set({
+          email: email,
+          friends: [],
+          games: [],
+          password: password,
+          username: username
+        })
+
       this.auth.sighUp(username, email, password).pipe(
         this.toast.observe({
           success: 'Congrats! You are all signed up!',
@@ -85,7 +97,7 @@ export class SignUpComponent implements OnInit {
         })
       ).subscribe(() => {
         this.router.navigate(['/profile']);
-      })
+      });
     }
   }
 
