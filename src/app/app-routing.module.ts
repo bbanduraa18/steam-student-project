@@ -7,17 +7,19 @@ import { LibraryComponent } from "./components/library/library.component";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { SignInComponent } from "./components/sign-in/sign-in.component";
 import { SignUpComponent } from "./components/sign-up/sign-up.component";
+import { canActivate ,redirectLoggedInTo, redirectUnauthorizedTo} from "@angular/fire/auth-guard";
 
-import { AuthGuard } from "./guards/auth.guard";
+const redirectToLogin = () => redirectUnauthorizedTo(['signin']);
+const redirectToProfile = () => redirectLoggedInTo(['profile'])
 
 const routes: Routes = [
   { path: '', redirectTo: '/games', pathMatch: 'full' },
-  { path: 'signin', component: SignInComponent },
-  { path: 'signup', component: SignUpComponent },
   { path: 'games', component: GamesComponent },
-  { path: 'library', component: LibraryComponent, canActivate: [AuthGuard] },
-  { path: 'friends', component: FriendsComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
+  { path: 'signin', component: SignInComponent, ...canActivate(redirectToProfile) },
+  { path: 'signup', component: SignUpComponent, ...canActivate(redirectToProfile) },
+  { path: 'library', component: LibraryComponent, ...canActivate(redirectToLogin) },
+  { path: 'friends', component: FriendsComponent, ...canActivate(redirectToLogin) },
+  { path: 'profile', component: ProfileComponent, ...canActivate(redirectToLogin) }
 ];
 
 @NgModule({
