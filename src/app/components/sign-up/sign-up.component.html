@@ -27,17 +27,18 @@
       <mat-error *ngIf="confirmPassword?.invalid">
         {{getErrorMessage()}}
       </mat-error>
-      <mat-error *ngIf="signUpForm.errors?.['passwordsDontMatch']">
-        Passwords should match
-      </mat-error>
     </mat-form-field>
+
+    <mat-error *ngIf="signUpForm.errors?.['passwordsDontMatch']">
+      Passwords should match
+    </mat-error>
 
     <div class="center">
       <button mat-raised-button color="primary" type="submit">
         Sign Up
       </button>
 
-      <span>Do you already have an account? <a class="sign-up-link" routerLink="/signin">Sign in</a></span>
+      <span>Do you already have an account? <a routerLink="/signin">Sign in</a></span>
     </div>
 
   </form>
