@@ -1,24 +1,27 @@
-<mat-card>
-  <mat-card-title>
-    Sign In
-  </mat-card-title>
-  <mat-card-content>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your email</mat-label>
-      <input matInput placeholder="pat@example.com" [formControl]="email" required>
-      <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+<div class="form-container mat-elevation-z5">
+  <h1>Sign In</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Email address" formControlName="email">
+      <mat-error *ngIf="email?.invalid">
+        {{getErrorMessage()}}
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your password</mat-label>
-      <input matInput placeholder="*******" [formControl]="password" required>
-      <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>
+    <mat-form-field>
+      <input matInput placeholder="Password" formControlName="password">
+      <mat-error *ngIf="password?.invalid">
+        {{getErrorMessage()}}
+      </mat-error>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="onSubmit()">Primary</button>
+    <div class="center">
+      <button mat-button color="primary" type="submit">
+        Sign In
+      </button>
 
-  </mat-card-content>
-</mat-card>
+      <span class="center ">New to our platform? <a class="sign-up-link" routerLink="/signup">Sign Up</a></span>
+    </div>
 
-
+  </form>
+</div>

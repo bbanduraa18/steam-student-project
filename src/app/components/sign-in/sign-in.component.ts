@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { FormControl, Validators } from "@angular/forms";
+import { Component} from '@angular/core';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
+import { HotToastService } from "@ngneat/hot-toast";
 
 @Component({
   selector: 'app-sign-in',
@@ -9,27 +10,47 @@ import { Router } from "@angular/router";
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent {
-  @Input()
-  error?: string | null;
 
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password =  new FormControl('');
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
+  })
 
-  constructor(private AuthService : AuthService, private route: Router) {
+  constructor(private auth: AuthService,
+              private router: Router,
+              private toast: HotToastService) {
+  }
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 
   getErrorMessage() {
-    if (this.email.hasError('required') || this.password.hasError('required')) {
+    if (this.email?.hasError('required') || this.password?.hasError('required')) {
       return 'You must enter a value';
     }
 
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+    return this.email?.hasError('email') ? 'Not a valid email' : '';
   }
 
-  onSubmit(): void {
-    this.AuthService.signIn(this.email.value, this.password.value)
-    this.route.navigate(['/games'])
-    console.log('welcome home!');
+  onSubmit() {
+    if(this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.auth.signIn(email, password).pipe(
+        this.toast.observe({
+          success: 'Logged in successfully',
+          loading: 'Logging in...',
+          error: 'There was en error'
+        })
+      )
+        .subscribe(() => {
+        this.router.navigate(['/profile']);
+      })
+    }
   }
 
 }

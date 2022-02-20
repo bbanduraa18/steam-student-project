@@ -1,0 +1,25 @@
+.form-container {
+  max-width: 250px;
+  margin: 0 auto;
+
+  background: #eceff1;
+  padding: 50px;
+  border-radius: 16px;
+  text-align: center;
+
+  & mat-form-field {
+    width: 100%;
+  }
+
+  & .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    span {
+      margin-top: 5px;
+    }
+  }
+}
+
+
