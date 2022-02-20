@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AngularFireModule } from "@angular/fire/compat";
-import { AngularFireAuthModule } from "@angular/fire/compat/auth";
+import { provideAuth, getAuth } from "@angular/fire/auth";
+import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
 import { environment } from "../environments/environment";
-import {AuthService} from "./services/auth.service";
+import { AuthService } from "./services/auth.service";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,13 +17,13 @@ import { LibraryComponent } from './components/library/library.component';
 import { ToolbarComponent } from "./components/toolbar/toolbar.component";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
-import { MatCardModule } from "@angular/material/card";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { ReactiveFormsModule } from "@angular/forms";
-import {MatInputModule} from "@angular/material/input";
+import { MatInputModule } from "@angular/material/input";
+import { HotToastModule } from '@ngneat/hot-toast';
 
 @NgModule({
   declarations: [
@@ -42,17 +42,18 @@ import {MatInputModule} from "@angular/material/input";
     BrowserAnimationsModule,
     ReactiveFormsModule,
 
-    AngularFireAuthModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
 
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    HotToastModule.forRoot()
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
