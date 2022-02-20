@@ -1,10 +1,26 @@
 <mat-toolbar color="primary">
-  <a href="#">
-    <mat-icon aria-hidden="false" aria-label="GamesShop">shop</mat-icon>
-  </a>
+  <div>
+    <a href="https://github.com/bbanduraa18/steam-student-project" target="_blank">
+      <mat-icon aria-hidden="false" aria-label="GamesShop">shop</mat-icon>
+    </a>
+    <a routerLink="games" mat-button>Games</a>
+    <a routerLink="library" mat-button>Library</a>
+    <a routerLink="friends" mat-button>Friends</a>
+    <a routerLink="profile" mat-button>Profile</a>
+  </div>
 
-  <a routerLink="games" mat-button>Games</a>
-  <a routerLink="library" mat-button>Library</a>
-  <a routerLink="friends" mat-button>Friends</a>
-  <a routerLink="profile" mat-button>Profile</a>
+  <ng-container *ngIf="auth.currentUser$ | async as user; else loginButton">
+    <a mat-button (click)="logOut()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </a>
+  </ng-container>
+
+  <ng-template #loginButton>
+    <a mat-button routerLink="signin">
+      <mat-icon>login</mat-icon>
+      Login
+    </a>
+  </ng-template>
+
 </mat-toolbar>
