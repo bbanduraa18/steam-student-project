@@ -1,1 +1,1 @@
-<p>profile works!</p>
+<h1 *ngIf="user$ | async as user">Welcome to GamesShop, {{user.email}}!</h1>
