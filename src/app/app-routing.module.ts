@@ -11,10 +11,10 @@ import { SignUpComponent } from "./components/sign-up/sign-up.component";
 import { AuthGuard } from "./guards/auth.guard";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/signin', pathMatch: 'full' },
+  { path: '', redirectTo: '/games', pathMatch: 'full' },
   { path: 'signin', component: SignInComponent },
   { path: 'signup', component: SignUpComponent },
-  { path: 'games', component: GamesComponent, canActivate: [AuthGuard] },
+  { path: 'games', component: GamesComponent },
   { path: 'library', component: LibraryComponent, canActivate: [AuthGuard] },
   { path: 'friends', component: FriendsComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
