@@ -12,15 +12,12 @@ import {from, switchMap} from "rxjs";
   providedIn: 'root'
 })
 export class AuthService {
-  public isLoggedIn: boolean;
   currentUser$ = authState(this.auth)
 
   constructor(private auth: Auth) {
-    this.isLoggedIn = false;
   }
 
   signIn(email: string, password: string) {
-    this.isLoggedIn = true;
     return from(signInWithEmailAndPassword(this.auth, email, password))
   }
 
