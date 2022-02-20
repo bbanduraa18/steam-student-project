@@ -10,20 +10,20 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Email address" formControlName="email">
+      <input matInput placeholder="Email address" formControlName="email" type="email">
       <mat-error *ngIf="email?.invalid">
         {{getErrorMessage()}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Password" formControlName="password">
+      <input matInput placeholder="Password" formControlName="password" type="password">
       <mat-error *ngIf="password?.invalid">
         {{getErrorMessage()}}
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Confirm Password" formControlName="confirmPassword">
+      <input matInput placeholder="Confirm Password" formControlName="confirmPassword" type="password">
       <mat-error *ngIf="confirmPassword?.invalid">
         {{getErrorMessage()}}
       </mat-error>

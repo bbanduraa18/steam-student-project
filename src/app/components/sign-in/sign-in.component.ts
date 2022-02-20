@@ -44,7 +44,7 @@ export class SignInComponent {
         this.toast.observe({
           success: 'Logged in successfully',
           loading: 'Logging in...',
-          error: 'There was en error'
+          error: ({ message }) => `${message}`
         })
       )
         .subscribe(() => {
