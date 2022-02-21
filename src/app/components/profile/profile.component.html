@@ -1,1 +1,28 @@
-<h1 *ngIf="user$ | async as user">Welcome to GamesShop, {{user.email}}!</h1>
+<div class="form-container mat-elevation-z5">
+  <h1>Profile</h1>
+  <form [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Username" formControlName="username">
+      <mat-error *ngIf="username?.invalid">
+        {{getErrorMessage()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="email" formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Age" formControlName="age">
+      <mat-error *ngIf="age?.invalid">
+        {{getErrorMessage()}}
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">
+      Save
+    </button>
+
+  </form>
+</div>
+
