@@ -6,6 +6,7 @@ import {
   authState,
   updateProfile
 } from "@angular/fire/auth";
+import { AngularFireAuth } from "@angular/fire/compat/auth";
 import {from, switchMap} from "rxjs";
 
 @Injectable({
@@ -14,7 +15,11 @@ import {from, switchMap} from "rxjs";
 export class AuthService {
   currentUser$ = authState(this.auth)
 
-  constructor(private auth: Auth) {
+  constructor(private auth: Auth, private afAuth: AngularFireAuth) {
+  }
+
+  getCurrentUser() {
+    return from(this.afAuth.currentUser);
   }
 
   signIn(email: string, password: string) {
