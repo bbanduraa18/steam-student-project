@@ -14,10 +14,21 @@ export function passwordMatchValidator(): ValidatorFn {
       return {
         passwordsDontMatch: true
       }
-    };
+    }
 
     return null;
   };
+}
+export function ageValidator(reg: RegExp): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if(reg.test(control.value)) {
+      return {
+        ageIsNotDigits: true
+      }
+    }
+
+    return null
+  }
 }
 
 @Component({
@@ -30,8 +41,9 @@ export class SignUpComponent {
   signUpForm = new FormGroup({
     username: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.email ,Validators.required]),
-    password: new FormControl('', Validators.required),
-    confirmPassword: new FormControl('', Validators.required)
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    confirmPassword: new FormControl('', Validators.required),
+    age: new FormControl('', [Validators.required, Validators.min(16), Validators.max(99), ageValidator(/\D/g)])
   }, { validators: passwordMatchValidator() })
 
   constructor(private auth: AuthService,
@@ -75,7 +87,7 @@ export class SignUpComponent {
 
   onSubmit() {
     if(this.signUpForm.valid) {
-      const { username, email, password } = this.signUpForm.value;
+      const { username, email, password, age } = this.signUpForm.value;
 
       this.firestore.doc('/users/' + email)
         .set({
@@ -83,7 +95,8 @@ export class SignUpComponent {
           friends: [],
           games: [],
           password: password,
-          username: username
+          username: username,
+          age: age
         })
 
       this.auth.sighUp(username, email, password).pipe(
