@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { HotToastService } from "@ngneat/hot-toast";
@@ -25,7 +25,7 @@ export function passwordMatchValidator(): ValidatorFn {
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
 
   signUpForm = new FormGroup({
     username: new FormControl('', Validators.required),
@@ -37,10 +37,7 @@ export class SignUpComponent implements OnInit {
   constructor(private auth: AuthService,
               private toast: HotToastService,
               private router: Router,
-              private firestore: AngularFirestore ) { }
-
-  ngOnInit(): void {
-  }
+              private firestore: AngularFirestore) { }
 
   get username() {
     return this.signUpForm.get('username');
