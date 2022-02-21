@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { provideAuth, getAuth } from "@angular/fire/auth";
 import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
+import { AngularFireModule } from "@angular/fire/compat";
+import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
 import { environment } from "../environments/environment";
@@ -44,6 +46,8 @@ import { HotToastModule } from '@ngneat/hot-toast';
     BrowserAnimationsModule,
     ReactiveFormsModule,
 
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
