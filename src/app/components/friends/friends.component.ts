@@ -13,7 +13,8 @@ export class FriendsComponent implements OnInit {
 
   public allUsers?: any[];
   public friends?: any;
-  public indexOfUser: number = 0;
+  private indexOfUser: number = 0;
+  public searchedUser: any;
   public user: any;
   public searchUser = new FormControl('');
 
@@ -28,7 +29,6 @@ export class FriendsComponent implements OnInit {
     });
     this.afStore.collection('/friends/').get().subscribe(snapshot => {
       this.allUsers = snapshot.docs.map(doc => doc.data());
-      console.log(this.allUsers)
     });
   }
 
@@ -42,6 +42,12 @@ export class FriendsComponent implements OnInit {
   searchUsers() {
     const search = this.searchUser.value;
     this.indexOfUser = this.allUsers!.findIndex((element) => element.email === search);
+    this.searchedUser = this.allUsers?.[this.indexOfUser];
+  }
+
+  cancel() {
+    this.searchUser.setValue('');
+    this.searchedUser = null;
   }
 
   addFriend(userEmail: string | null) {
@@ -53,6 +59,8 @@ export class FriendsComponent implements OnInit {
       friends: arrayUnion(userEmail)
     }).then(() => console.log(`'${userEmail}' was added to your friends.`))
     this.getFriends();
+    this.searchUser.setValue('');
+    this.searchedUser = null;
     return;
   }
 

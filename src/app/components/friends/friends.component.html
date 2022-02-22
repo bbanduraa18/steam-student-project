@@ -1,9 +1,31 @@
 <form>
-  <input [formControl]="searchUser">
-  <button (click)="addFriend()" type="button">Add</button>
+  <form>
+    <mat-form-field appearance="fill">
+      <mat-label>Friend's email</mat-label>
+      <input [formControl]="searchUser" matInput placeholder="Email of user">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="button" (click)="searchUsers()">
+      Search User
+    </button>
+    <button mat-raised-button color="primary" type="button" (click)="cancel()">
+      Cancel
+    </button>
+  </form>
 </form>
 
+<ng-container *ngIf="!searchedUser">
+  <div *ngFor="let friend of friends">
+    <span>{{friend}}</span>
+    <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(friend)">
+      Delete
+    </button>
+  </div>
+</ng-container>
 
-<div *ngFor="let friend of friends">
-  <span>{{friend.email}}</span>
+<div *ngIf="searchedUser">
+  <span #userEmail>{{searchedUser.email}}</span>
+  <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
+    Add to Friends
+  </button>
 </div>
