@@ -1,1 +1,9 @@
-<p>friends works!</p>
+<form>
+  <input [formControl]="searchUser">
+  <button (click)="addFriend()" type="button">Add</button>
+</form>
+
+
+<div *ngFor="let friend of friends">
+  <span>{{friend.email}}</span>
+</div>
