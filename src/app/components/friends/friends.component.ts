@@ -11,12 +11,14 @@ import { arrayRemove, arrayUnion } from "@angular/fire/firestore";
 })
 export class FriendsComponent implements OnInit {
 
-  public allUsers?: any[];
-  public friends?: any;
-  private indexOfUser: number = 0;
-  public searchedUser: any;
   public user: any;
+  public friends?: any;
+  public allUsers?: any[];
   public searchUser = new FormControl('');
+  public searchedUser: any;
+  private indexOfUser: number = 0;
+
+  public userDoesntExists: boolean = false;
 
   constructor(private auth: AuthService,
               private afStore: AngularFirestore) {
@@ -39,10 +41,24 @@ export class FriendsComponent implements OnInit {
     })
   }
 
-  searchUsers() {
+  search() {
     const search = this.searchUser.value;
+
+    if(search === this.user) {
+      return;
+    }
+
     this.indexOfUser = this.allUsers!.findIndex((element) => element.email === search);
-    this.searchedUser = this.allUsers?.[this.indexOfUser];
+
+    if(this.indexOfUser < 0) {
+      console.log(this.indexOfUser)
+      this.userDoesntExists = true;
+      console.log(this.userDoesntExists)
+      return;
+    } else {
+      this.searchedUser = this.allUsers?.[this.indexOfUser];
+      return;
+    }
   }
 
   cancel() {
@@ -52,12 +68,12 @@ export class FriendsComponent implements OnInit {
 
   addFriend(userEmail: string | null) {
     if(this.friends.includes(userEmail)) {
-      return null;
+      return;
     }
 
     this.afStore.collection('/users/').doc(this.user).update({
       friends: arrayUnion(userEmail)
-    }).then(() => console.log(`'${userEmail}' was added to your friends.`))
+    }).then(() => console.log(`'${userEmail}' was added to your friends.`));
     this.getFriends();
     this.searchUser.setValue('');
     this.searchedUser = null;
@@ -69,6 +85,9 @@ export class FriendsComponent implements OnInit {
       friends: arrayRemove(friend)
     }).then(() => console.log(`'${friend}' was removed from your friends.`));
     this.getFriends();
+    this.searchUser.setValue('');
+    this.searchedUser = null;
+    return;
   }
 
 }

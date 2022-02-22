@@ -1,17 +1,16 @@
-<form>
-  <form>
-    <mat-form-field appearance="fill">
-      <mat-label>Friend's email</mat-label>
-      <input [formControl]="searchUser" matInput placeholder="Email of user">
-    </mat-form-field>
 
-    <button mat-raised-button color="primary" type="button" (click)="searchUsers()">
-      Search User
-    </button>
-    <button mat-raised-button color="primary" type="button" (click)="cancel()">
-      Cancel
-    </button>
-  </form>
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Friend's email</mat-label>
+    <input [formControl]="searchUser" matInput placeholder="Email of user">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="button" (click)="search()">
+    Search User
+  </button>
+  <button mat-raised-button color="primary" type="button" (click)="cancel()">
+    Cancel
+  </button>
 </form>
 
 <ng-container *ngIf="!searchedUser">
@@ -23,9 +22,28 @@
   </div>
 </ng-container>
 
-<div *ngIf="searchedUser">
-  <span #userEmail>{{searchedUser.email}}</span>
-  <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
-    Add to Friends
-  </button>
-</div>
+<ng-container *ngIf="searchedUser">
+  <div *ngIf="friends.includes(searchedUser.email)">
+    <span>{{searchedUser.email}}</span>
+    <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(searchedUser.email)">
+      Delete
+    </button>
+  </div>
+
+  <div *ngIf="userDoesntExists === true; else newFriend">
+    <span>No users with {{searchUser.value}} email.</span>
+  </div>
+
+  <ng-template #newFriend>
+    <span #userEmail>{{searchedUser.email}}</span>
+    <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
+      Add to Friends
+    </button>
+  </ng-template>
+</ng-container>
+
+
+<!--<ng-template #newFriend>-->
+
+<!--</ng-template>-->
+
