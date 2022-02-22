@@ -89,8 +89,7 @@ export class SignUpComponent {
     if(this.signUpForm.valid) {
       const { username, email, password, age } = this.signUpForm.value;
 
-      this.firestore.doc('/users/' + email)
-        .set({
+      this.firestore.doc('/users/' + email).set({
           email: email,
           friends: [],
           games: [],
@@ -98,6 +97,11 @@ export class SignUpComponent {
           username: username,
           age: age
         })
+
+      this.firestore.doc('/friends/' + email).set({
+        email: email,
+        username: username
+      })
 
       this.auth.sighUp(username, email, password).pipe(
         this.toast.observe({
