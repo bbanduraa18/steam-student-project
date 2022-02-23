@@ -1,4 +1,10 @@
-<div class="form-container mat-elevation-z5">
+<div class="overlay-spinner" *ngIf="!spinner">
+  <div class="center-spinner">
+    <mat-spinner diameter="200"></mat-spinner>
+  </div>
+</div>
+
+<div class="form-container mat-elevation-z5" *ngIf="spinner">
   <h1>Sign Up</h1>
   <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
 
@@ -40,14 +46,13 @@
       </mat-error>
       <ng-template #young>
         <mat-error>
-          You must enter a value!
-          You are so young or died(
+          Enter the age from 16 to 99
         </mat-error>
       </ng-template>
     </mat-form-field>
 
     <div class="center">
-      <button mat-raised-button color="primary" type="submit">
+      <button mat-raised-button color="primary" type="submit" [disabled]="signUpForm.invalid">
         Sign Up
       </button>
       <span>Do you already have an account? <a routerLink="/signin">Sign in</a></span>
