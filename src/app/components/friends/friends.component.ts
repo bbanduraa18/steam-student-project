@@ -17,14 +17,18 @@ export class FriendsComponent implements OnInit {
   public searchUser = new FormControl('');
   public searchedUser: any;
   private indexOfUser: number = 0;
-
-  public userDoesntExists: boolean = false;
+  public userDoesntExist: boolean = false;
+  public spinner: boolean = false;
 
   constructor(private auth: AuthService,
               private afStore: AngularFirestore) {
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.spinner = true
+    }, 1000)
+
     this.auth.getCurrentUser().subscribe(user => {
       this.user = user?.email;
       this.getFriends();
@@ -42,26 +46,32 @@ export class FriendsComponent implements OnInit {
   }
 
   search() {
+    this.userDoesntExist = false;
+    this.searchedUser = null;
     const search = this.searchUser.value;
 
+    if(search === '') {
+      return;
+    }
+
     if(search === this.user) {
+      this.userDoesntExist = true;
+      this.searchedUser = 'user doesnt exist';
       return;
     }
 
     this.indexOfUser = this.allUsers!.findIndex((element) => element.email === search);
 
     if(this.indexOfUser < 0) {
-      console.log(this.indexOfUser)
-      this.userDoesntExists = true;
-      console.log(this.userDoesntExists)
-      return;
+      this.userDoesntExist = true;
+      this.searchedUser = 'user doesnt exist';
     } else {
       this.searchedUser = this.allUsers?.[this.indexOfUser];
-      return;
     }
   }
 
   cancel() {
+    this.userDoesntExist = false;
     this.searchUser.setValue('');
     this.searchedUser = null;
   }
@@ -73,21 +83,23 @@ export class FriendsComponent implements OnInit {
 
     this.afStore.collection('/users/').doc(this.user).update({
       friends: arrayUnion(userEmail)
-    }).then(() => console.log(`'${userEmail}' was added to your friends.`));
-    this.getFriends();
-    this.searchUser.setValue('');
-    this.searchedUser = null;
-    return;
+    }).then(() => this.getFriends());
+    setTimeout(() => {
+      console.log(`'${userEmail}' was added to your friends.`);
+      this.searchUser.setValue('');
+      this.searchedUser = null;
+    }, 500)
   }
 
   deleteFriend(friend: string) {
     this.afStore.collection('/users/').doc(this.user).update({
       friends: arrayRemove(friend)
-    }).then(() => console.log(`'${friend}' was removed from your friends.`));
-    this.getFriends();
-    this.searchUser.setValue('');
-    this.searchedUser = null;
-    return;
+    }).then(() => this.getFriends());
+    setTimeout(() => {
+      console.log(`'${friend}' was removed from your friends.`)
+      this.searchUser.setValue('');
+      this.searchedUser = null;
+    }, 500)
   }
 
 }

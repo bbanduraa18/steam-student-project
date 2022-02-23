@@ -1,49 +1,53 @@
-
-<form>
-  <mat-form-field appearance="fill">
-    <mat-label>Friend's email</mat-label>
-    <input [formControl]="searchUser" matInput placeholder="Email of user">
-  </mat-form-field>
-
-  <button mat-raised-button color="primary" type="button" (click)="search()">
-    Search User
-  </button>
-  <button mat-raised-button color="primary" type="button" (click)="cancel()">
-    Cancel
-  </button>
-</form>
-
-<ng-container *ngIf="!searchedUser">
-  <div *ngFor="let friend of friends">
-    <span>{{friend}}</span>
-    <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(friend)">
-      Delete
-    </button>
+<div class="overlay-spinner" *ngIf="!spinner">
+  <div class="center-spinner">
+    <mat-spinner diameter="200"></mat-spinner>
   </div>
-</ng-container>
+</div>
 
-<ng-container *ngIf="searchedUser">
-  <div *ngIf="friends.includes(searchedUser.email)">
-    <span>{{searchedUser.email}}</span>
-    <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(searchedUser.email)">
-      Delete
+<div class="content" *ngIf="spinner">
+  <form>
+    <mat-form-field appearance="fill">
+      <mat-label>Friend's email</mat-label>
+      <input [formControl]="searchUser" matInput placeholder="Email of user">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="button" (click)="search()">
+      Search User
     </button>
-  </div>
-
-  <div *ngIf="userDoesntExists === true; else newFriend">
-    <span>No users with {{searchUser.value}} email.</span>
-  </div>
-
-  <ng-template #newFriend>
-    <span #userEmail>{{searchedUser.email}}</span>
-    <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
-      Add to Friends
+    <button mat-raised-button color="primary" type="button" (click)="cancel()">
+      Cancel
     </button>
-  </ng-template>
-</ng-container>
+  </form>
 
+  <ng-container *ngIf="!searchedUser && !userDoesntExist">
+    <div *ngFor="let friend of friends">
+      <span>{{friend}}</span>
+      <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(friend)">
+        Delete
+      </button>
+    </div>
+  </ng-container>
 
-<!--<ng-template #newFriend>-->
+  <ng-container *ngIf="searchedUser">
+    <div *ngIf="friends.includes(searchedUser.email); else newFriend">
+      <span>{{searchedUser.email}}</span>
+      <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(searchedUser.email)">
+        Delete
+      </button>
+    </div>
 
-<!--</ng-template>-->
+    <ng-template #newFriend>
+      <div *ngIf="!userDoesntExist">
+        <span #userEmail>{{searchedUser.email}}</span>
+        <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
+          Add to Friends
+        </button>
+      </div>
+    </ng-template>
+
+    <div *ngIf="userDoesntExist">
+      <span>No users with this email.</span>
+    </div>
+  </ng-container>
+</div>
 
