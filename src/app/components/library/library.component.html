@@ -4,4 +4,31 @@
   </div>
 </div>
 
-<div *ngIf="spinner"></div>
+<div *ngIf="spinner">
+  <h1>
+    My Games
+  </h1>
+
+  <ng-container>
+    <div class="games">
+      <mat-card *ngFor="let gameS of localGames" class="example-card">
+        <mat-card-header>
+          <mat-card-title>{{gameS.title}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>{{gameS.description}}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-raised-button color="primary">
+            Download
+          </button>
+          <button mat-raised-button>
+            Share
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,11 @@
+.games {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 5px;
+}
+
+.example-card {
+  flex: 1 1 30%;
+  max-width: 30%;
+}
