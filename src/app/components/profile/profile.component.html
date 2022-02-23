@@ -1,10 +1,16 @@
-<div class="form-container mat-elevation-z5">
+<div class="overlay-spinner" *ngIf="!spinner">
+  <div class="center-spinner">
+    <mat-spinner diameter="200"></mat-spinner>
+  </div>
+</div>
+
+<div class="form-container mat-elevation-z5" *ngIf="spinner">
   <h1>Profile</h1>
   <form [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input matInput placeholder="Username" formControlName="username">
-      <mat-error *ngIf="username?.invalid">
-        {{getErrorMessage()}}
+      <mat-error *ngIf="usernameForError?.invalid">
+        You must enter a value!
       </mat-error>
     </mat-form-field>
 
@@ -14,15 +20,19 @@
 
     <mat-form-field>
       <input matInput placeholder="Age" formControlName="age">
-      <mat-error *ngIf="age?.invalid">
-        {{getErrorMessage()}}
+      <mat-error *ngIf="ageForError?.hasError('ageIsNotDigits'); else young">
+        This field must contain only digits value
       </mat-error>
+      <ng-template #young>
+        <mat-error>
+          Enter the age from 16 to 99
+        </mat-error>
+      </ng-template>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">
+    <button mat-raised-button color="primary" type="submit" [disabled]="userInfoForm.invalid">
       Save
     </button>
-
   </form>
 </div>
 
