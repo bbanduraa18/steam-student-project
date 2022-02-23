@@ -26,7 +26,7 @@
   <div>
     <h2>Featured Games</h2>
     <ng-container *ngIf="!searchedGame && !gameDoesntExist">
-    <div class="games">
+      <div class="games">
         <mat-card *ngFor="let game of allGames" class="example-card">
             <mat-card-header>
               <mat-card-title>{{game.title}}</mat-card-title>
