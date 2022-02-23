@@ -4,41 +4,43 @@
   </div>
 </div>
 
-<div class="content" *ngIf="spinner">
+<div *ngIf="spinner">
   <form>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>Friend's email</mat-label>
       <input [formControl]="searchUser" matInput placeholder="Email of user">
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="button" (click)="search()">
-      Search User
-    </button>
-    <button mat-raised-button color="primary" type="button" (click)="cancel()">
-      Cancel
-    </button>
+    <div>
+      <button mat-raised-button color="primary" type="button" (click)="search()">
+        Search User
+      </button>
+      <button mat-raised-button color="warn" type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
   </form>
 
   <ng-container *ngIf="!searchedUser && !userDoesntExist">
-    <div *ngFor="let friend of friends">
-      <span>{{friend}}</span>
-      <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(friend)">
+    <div *ngFor="let friend of friends" class="friend">
+      <p>{{friend}}</p>
+      <button mat-raised-button color="warn" type="submit" (click)="deleteFriend(friend)">
         Delete
       </button>
     </div>
   </ng-container>
 
   <ng-container *ngIf="searchedUser">
-    <div *ngIf="friends.includes(searchedUser.email); else newFriend">
-      <span>{{searchedUser.email}}</span>
-      <button mat-raised-button color="primary" type="submit" (click)="deleteFriend(searchedUser.email)">
+    <div *ngIf="friends.includes(searchedUser.email); else newFriend" class="friend">
+      <p>{{searchedUser.email}}</p>
+      <button mat-raised-button color="warn" type="submit" (click)="deleteFriend(searchedUser.email)">
         Delete
       </button>
     </div>
 
     <ng-template #newFriend>
-      <div *ngIf="!userDoesntExist">
-        <span #userEmail>{{searchedUser.email}}</span>
+      <div *ngIf="!userDoesntExist" class="friend">
+        <p #userEmail>{{searchedUser.email}}</p>
         <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
           Add to Friends
         </button>
