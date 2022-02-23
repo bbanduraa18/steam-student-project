@@ -16,7 +16,8 @@ export class FriendsComponent implements OnInit {
   public allUsers?: any[];
   public searchUser = new FormControl('');
   public searchedUser: any;
-  private indexOfUser: number = 0;
+  public searchedUsers: any[] = [];
+  private indexesOfUsers: number[] = [];
   public userDoesntExist: boolean = false;
   public spinner: boolean = false;
 
@@ -48,6 +49,7 @@ export class FriendsComponent implements OnInit {
   search() {
     this.userDoesntExist = false;
     this.searchedUser = null;
+    this.searchedUsers = [];
     const search = this.searchUser.value;
 
     if(search === '') {
@@ -60,14 +62,28 @@ export class FriendsComponent implements OnInit {
       return;
     }
 
-    this.indexOfUser = this.allUsers!.findIndex((element) => element.email === search);
+    this.indexesOfUsers = this.getAllIndexes(search, this.allUsers);
 
-    if(this.indexOfUser < 0) {
+    if(this.indexesOfUsers!.length === 0) {
       this.userDoesntExist = true;
       this.searchedUser = 'user doesnt exist';
     } else {
-      this.searchedUser = this.allUsers?.[this.indexOfUser];
+      for(let i = 0; i < this.indexesOfUsers!.length; i++) {
+        this.searchedUser = 'game exists';
+        this.searchedUsers.push(this.allUsers![this.indexesOfUsers![i]]);
+      }
     }
+  }
+
+  getAllIndexes(val: string, arr?: any[]) {
+    let indexes = [];
+    for(let i = 0; i < arr!.length; i++){
+      if(arr![i].email.toLowerCase().includes(val.toLowerCase())) {
+        indexes.push(i);
+      }
+    }
+
+    return (indexes);
   }
 
   cancel() {

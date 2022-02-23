@@ -33,21 +33,23 @@
   </ng-container>
 
   <ng-container *ngIf="searchedUser">
-    <div *ngIf="friends.includes(searchedUser.email); else newFriend" class="friend">
-      <p>{{searchedUser.email}}</p>
-      <button mat-raised-button color="warn" type="submit" (click)="deleteFriend(searchedUser.email)">
-        Delete
-      </button>
-    </div>
-
-    <ng-template #newFriend>
-      <div *ngIf="!userDoesntExist" class="friend">
-        <p #userEmail>{{searchedUser.email}}</p>
-        <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
-          Add to Friends
+    <div *ngFor="let userS of searchedUsers">
+      <div *ngIf="friends.includes(userS.email); else newFriend" class="friend">
+        <p>{{userS.email}}</p>
+        <button mat-raised-button color="warn" type="submit" (click)="deleteFriend(userS.email)">
+          Delete
         </button>
       </div>
-    </ng-template>
+
+      <ng-template #newFriend>
+        <div *ngIf="!userDoesntExist" class="friend">
+          <p #userEmail>{{userS.email}}</p>
+          <button mat-raised-button color="primary" type="submit" (click)="addFriend(userEmail.textContent)">
+            Add to Friends
+          </button>
+        </div>
+      </ng-template>
+    </div>
 
     <div *ngIf="userDoesntExist">
       <span>No users with this email.</span>
