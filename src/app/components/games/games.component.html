@@ -52,9 +52,9 @@
     </ng-container>
 
     <ng-container *ngIf="searchedGame">
-      <div *ngFor="let gameS of searchedGames">
-        <div *ngIf="games.includes(gameS.title); else newGame">
-          <mat-card class="example-card">
+      <div class="games">
+        <div *ngFor="let gameS of searchedGames" class="example-card">
+          <mat-card *ngIf="games.includes(gameS.title); else newGame">
             <mat-card-header>
               <mat-card-title>{{gameS.title}}</mat-card-title>
               <mat-card-subtitle>{{gameS.price}}</mat-card-subtitle>
@@ -69,11 +69,9 @@
               </button>
             </mat-card-actions>
           </mat-card>
-        </div>
 
-        <ng-template #newGame>
-          <div *ngIf="!gameDoesntExist">
-            <mat-card class="example-card">
+          <ng-template #newGame class="example-card">
+            <mat-card *ngIf="!gameDoesntExist">
               <mat-card-header>
                 <mat-card-title #gameTitle>{{gameS.title}}</mat-card-title>
                 <mat-card-subtitle>{{gameS.price}}</mat-card-subtitle>
@@ -88,11 +86,11 @@
                 </button>
               </mat-card-actions>
             </mat-card>
-          </div>
-        </ng-template>
+          </ng-template>
+        </div>
 
-        <div *ngIf="gameDoesntExist">
-          <span>No users with this email.</span>
+        <div *ngIf="gameDoesntExist" class="full">
+          <span>No games with this title.</span>
         </div>
       </div>
     </ng-container>
