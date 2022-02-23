@@ -4,4 +4,98 @@
   </div>
 </div>
 
-<div *ngIf="spinner"></div>
+<div *ngIf="spinner">
+  <h1>Games</h1>
+
+  <form>
+    <mat-form-field appearance="outline">
+      <mat-label>Game's title</mat-label>
+      <input [formControl]="searchGame" matInput placeholder="Title of Game">
+    </mat-form-field>
+
+    <div>
+      <button mat-raised-button color="primary" type="button" (click)="search()">
+        Search Game
+      </button>
+      <button mat-raised-button color="warn" type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <div>
+    <h2>Featured Games</h2>
+    <ng-container *ngIf="!searchedGame && !gameDoesntExist">
+    <div class="games">
+        <mat-card *ngFor="let game of allGames" class="example-card">
+            <mat-card-header>
+              <mat-card-title>{{game.title}}</mat-card-title>
+              <mat-card-subtitle>{{game.price}}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+              <p>{{game.description}}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit" (click)="addGame(game.title)" *ngIf="!games.includes(game.title); else inLibrary">
+                Add to Library
+              </button>
+
+              <ng-template #inLibrary>
+                <button mat-raised-button disabled>
+                  In Library
+                </button>
+              </ng-template>
+            </mat-card-actions>
+          </mat-card>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="searchedGame">
+      <div *ngIf="games.includes(searchedGame.title); else newGame">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title>{{searchedGame.title}}</mat-card-title>
+            <mat-card-subtitle>{{searchedGame.price}}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>{{searchedGame.description}}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button disabled>
+              In Library
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <ng-template #newGame>
+        <div *ngIf="!gameDoesntExist">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <mat-card-title #gameTitle>{{searchedGame.title}}</mat-card-title>
+              <mat-card-subtitle>{{searchedGame.price}}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+              <p>{{searchedGame.description}}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit" (click)="addGame(gameTitle.textContent)">
+                Add to Library
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </ng-template>
+
+      <div *ngIf="gameDoesntExist">
+        <span>No users with this email.</span>
+      </div>
+    </ng-container>
+
+
+
+  </div>
+</div>
