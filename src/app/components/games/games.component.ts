@@ -17,7 +17,6 @@ export class GamesComponent implements OnInit {
   public searchGame = new FormControl('');
   public searchedGame: any;
   public searchedGames: any[] = [];
-  private indexOfGame: number = 0;
   private indexesOfGames: number[] = [];
   public gameDoesntExist: boolean = false;
   public spinner: boolean = false;
@@ -69,7 +68,7 @@ export class GamesComponent implements OnInit {
     }
   }
 
-  private getAllIndexes(val: string, arr?: any[]) {
+  getAllIndexes(val: string, arr?: any[]) {
     let indexes = [];
     for(let i = 0; i < arr!.length; i++){
       if(arr![i].lowerTitle?.includes(val)) {
