@@ -7,7 +7,6 @@
 <div class="form-container mat-elevation-z5" *ngIf="spinner">
   <h1>Sign Up</h1>
   <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-
     <mat-form-field>
       <input matInput placeholder="Username" formControlName="username">
       <mat-error *ngIf="username?.invalid">
@@ -17,9 +16,15 @@
 
     <mat-form-field>
       <input matInput placeholder="Email address" formControlName="email" type="email">
-      <mat-error *ngIf="email?.invalid">
-        {{getErrorMessage()}}
+      <mat-error *ngIf="email?.hasError('pattern'); else emptyEmail">
+        Incorrect email. Example: 'pet@gmail.com'
       </mat-error>
+
+      <ng-template #emptyEmail>
+        <mat-error *ngIf="email?.invalid">
+          {{getErrorMessage()}}
+        </mat-error>
+      </ng-template>
     </mat-form-field>
 
     <mat-form-field>
@@ -38,12 +43,12 @@
       Passwords should match
     </mat-error>
 
-
     <mat-form-field>
       <input matInput placeholder="Age (Only digits)" formControlName="age">
       <mat-error *ngIf="age?.hasError('ageIsNotDigits'); else young">
         This field must contain only digits value
       </mat-error>
+
       <ng-template #young>
         <mat-error>
           Enter the age from 16 to 99
@@ -58,5 +63,8 @@
       <span>Do you already have an account? <a routerLink="/signin">Sign in</a></span>
     </div>
 
+    <mat-error *ngIf="userExists">
+      {{userExists}}
+    </mat-error>
   </form>
 </div>

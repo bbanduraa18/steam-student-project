@@ -4,6 +4,7 @@ import { AuthService } from "../../services/auth.service";
 import { HotToastService } from "@ngneat/hot-toast";
 import { Router } from "@angular/router";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
+import {observable} from "rxjs";
 
 export function passwordMatchValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -38,10 +39,14 @@ export function ageValidator(reg: RegExp): ValidatorFn {
 })
 export class SignUpComponent implements OnInit {
   public spinner: boolean = false;
+  public allUsers?: any[];
+  public searchedUser: any;
+  private indexOfUser: number = 0;
+  public userExists: string = '';
 
   signUpForm = new FormGroup({
     username: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.email ,Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     confirmPassword: new FormControl('', Validators.required),
     age: new FormControl('', [Validators.required, Validators.min(16), Validators.max(99), ageValidator(/\D/g)])
@@ -55,7 +60,10 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.spinner = true
-    }, 1000)
+    }, 1000);
+    this.firestore.collection('/friends/').get().subscribe(snapshot => {
+      this.allUsers = snapshot.docs.map(doc => doc.data());
+    });
   }
 
   get username() {
@@ -80,23 +88,25 @@ export class SignUpComponent implements OnInit {
 
   getErrorMessage() {
     if (this.email?.hasError('required')
-      || this.password?.hasError('required')
       || this.username?.hasError('required')
       || this.confirmPassword?.hasError('required')
       || this.age?.hasError('required')) {
 
         return 'You must enter a value';
-
     }
 
-    return this.email?.hasError('email') ? 'Not a valid email' : '';
+    return;
   }
 
   onSubmit() {
-    if(this.signUpForm.valid) {
-      const { username, email, password, age } = this.signUpForm.value;
+    this.indexOfUser = this.allUsers!.findIndex((element) => element.email === this.email?.value);
+    if(this.indexOfUser >= 0) {
+      this.userExists = 'The User with this email is already exists. Please, Sign  in!'
+    } else {
+      if(this.signUpForm.valid) {
+        const { username, email, password, age } = this.signUpForm.value;
 
-      this.firestore.doc('/users/' + email).set({
+        this.firestore.doc('/users/' + email).set({
           email: email,
           friends: [],
           games: [],
@@ -105,20 +115,21 @@ export class SignUpComponent implements OnInit {
           age: age
         })
 
-      this.firestore.doc('/friends/' + email).set({
-        email: email,
-        username: username
-      })
-
-      this.auth.sighUp(username, email, password).pipe(
-        this.toast.observe({
-          success: 'Congrats! You are all signed up!',
-          loading: 'Signing in',
-          error: ({ message }) => `${message}`
+        this.firestore.doc('/friends/' + email).set({
+          email: email,
+          username: username
         })
-      ).subscribe(() => {
-        this.router.navigate(['/profile']);
-      });
+
+        this.auth.sighUp(username, email, password).pipe(
+          this.toast.observe({
+            success: 'Congrats! You are all signed up!',
+            loading: 'Signing in',
+            error: ({ message }) => `${message}`
+          })
+        ).subscribe(() => {
+          this.router.navigate(['/profile']);
+        });
+      }
     }
   }
 
