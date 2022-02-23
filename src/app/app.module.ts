@@ -29,6 +29,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { HotToastModule } from '@ngneat/hot-toast';
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { HotToastModule } from '@ngneat/hot-toast';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatCardModule,
     HotToastModule.forRoot()
   ],
   providers: [AuthService],
