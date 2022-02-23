@@ -16,7 +16,9 @@ export class GamesComponent implements OnInit {
   public allGames?: any[];
   public searchGame = new FormControl('');
   public searchedGame: any;
+  public searchedGames: any[] = [];
   private indexOfGame: number = 0;
+  private indexesOfGames: number[] = [];
   public gameDoesntExist: boolean = false;
   public spinner: boolean = false;
 
@@ -47,26 +49,42 @@ export class GamesComponent implements OnInit {
   search() {
     this.gameDoesntExist = false;
     this.searchedGame = null;
+    this.searchedGames = [];
     const search = this.searchGame.value;
 
     if(search === '') {
       return;
     }
 
-    this.indexOfGame = this.allGames!.findIndex((element) => element.title === search);
+    this.indexesOfGames = this.getAllIndexes(search, this.allGames);
 
-    if(this.indexOfGame < 0) {
+    if(this.indexesOfGames!.length === 0) {
       this.gameDoesntExist = true;
-      this.searchedGame = 'user doesnt exist';
+      this.searchedGame = 'game doesnt exist';
     } else {
-      this.searchedGame = this.allGames?.[this.indexOfGame];
+      for(let i = 0; i < this.indexesOfGames!.length; i++ ) {
+        this.searchedGame = 'game exists';
+        this.searchedGames.push(this.allGames![this.indexesOfGames![i]]);
+      }
     }
+  }
+
+  private getAllIndexes(val: string, arr?: any[]) {
+    let indexes = [];
+    for(let i = 0; i < arr!.length; i++){
+      if(arr![i].lowerTitle?.includes(val)) {
+        indexes.push(i);
+      }
+    }
+
+    return (indexes);
   }
 
   cancel() {
     this.gameDoesntExist = false;
     this.searchGame.setValue('');
     this.searchedGame = null;
+    this.searchedGames = [];
   }
 
   addGame(gameTitle: string | null) {
@@ -81,6 +99,7 @@ export class GamesComponent implements OnInit {
       console.log(`'${gameTitle}' was added to your library.`);
       this.searchGame.setValue('');
       this.searchedGame = null;
+      this.searchedGames = [];
     }, 500)
   }
 
