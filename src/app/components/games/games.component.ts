@@ -71,7 +71,7 @@ export class GamesComponent implements OnInit {
   getAllIndexes(val: string, arr?: any[]) {
     let indexes = [];
     for(let i = 0; i < arr!.length; i++){
-      if(arr![i].lowerTitle?.includes(val)) {
+      if(arr![i].lowerTitle?.includes(val.toLowerCase())) {
         indexes.push(i);
       }
     }
