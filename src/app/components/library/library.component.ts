@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LibraryComponent implements OnInit {
 
+  public spinner: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.spinner = true
+    }, 1000)
   }
 
 }
