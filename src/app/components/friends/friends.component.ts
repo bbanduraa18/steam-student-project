@@ -25,13 +25,6 @@ export class FriendsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    window.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter') e.preventDefault()
-    });
-    window.addEventListener('keyup', (e) => {
-      if(e.key === 'Enter') e.preventDefault()
-    });
-
     setTimeout(() => {
       this.spinner = true
     }, 1000);

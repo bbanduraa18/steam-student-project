@@ -56,13 +56,6 @@ export class ProfileComponent implements OnInit {
               private afStore: AngularFirestore) { }
 
   ngOnInit() {
-    window.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter') e.preventDefault()
-    });
-    window.addEventListener('keyup', (e) => {
-      if(e.key === 'Enter') e.preventDefault()
-    });
-    
     setTimeout(() => {
       this.spinner = true
     }, 1000);
