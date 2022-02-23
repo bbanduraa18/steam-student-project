@@ -13,8 +13,8 @@ const redirectToLogin = () => redirectUnauthorizedTo(['signin']);
 const redirectToProfile = () => redirectLoggedInTo(['profile'])
 
 const routes: Routes = [
-  { path: '', redirectTo: '/games', pathMatch: 'full' },
-  { path: 'games', component: GamesComponent },
+  { path: '', redirectTo: '/signin', pathMatch: 'full' },
+  { path: 'games', component: GamesComponent, ...canActivate(redirectToLogin) },
   { path: 'signin', component: SignInComponent, ...canActivate(redirectToProfile) },
   { path: 'signup', component: SignUpComponent, ...canActivate(redirectToProfile) },
   { path: 'library', component: LibraryComponent, ...canActivate(redirectToLogin) },
