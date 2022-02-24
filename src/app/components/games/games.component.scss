@@ -11,6 +11,14 @@ form {
   }
 }
 
+mat-card-header {
+  padding: 10px;
+  color: white;
+  height: 100px;
+  background: cornflowerblue;
+  border-radius: 10px;
+}
+
 .games {
   display: flex;
   flex-wrap: wrap;
