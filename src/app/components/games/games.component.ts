@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth.service";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { FormControl } from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {arrayUnion} from "@angular/fire/firestore";
 
 @Component({
@@ -19,10 +19,19 @@ export class GamesComponent implements OnInit {
   public searchedGames: any[] = [];
   private indexesOfGames: number[] = [];
   public gameDoesntExist: boolean = false;
+  public price: number | null = 0;
+  public genres: FormGroup;
   public spinner: boolean = false;
 
   constructor(private auth: AuthService,
-              private afStore: AngularFirestore) { }
+              private afStore: AngularFirestore,
+              fb: FormBuilder) {
+    this.genres = fb.group({
+      action: false,
+      rpg: false,
+      horror: false
+    })
+  }
 
   ngOnInit(): void {
     setTimeout(() => {

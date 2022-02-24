@@ -30,6 +30,8 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { HotToastModule } from '@ngneat/hot-toast';
 import { MatCardModule } from "@angular/material/card";
+import { MatSliderModule } from "@angular/material/slider";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import { MatCardModule } from "@angular/material/card";
     MatInputModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    HotToastModule.forRoot()
+    MatSliderModule,
+    MatCheckboxModule,
+    HotToastModule.forRoot(),
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
